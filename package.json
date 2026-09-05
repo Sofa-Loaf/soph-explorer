@@ -1,0 +1,39 @@
+{
+  "name": "soph-explorer",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Soph Explorer Debloat — lite Windows file explorer with fast search and PDF preview",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "postinstall": "node scripts/copy-pdfjs-assets.mjs",
+    "copy-pdfjs": "node scripts/copy-pdfjs-assets.mjs",
+    "icons": "python3 scripts/generate-icons.py",
+    "sample-pdf": "node scripts/create-sample-pdfs.mjs",
+    "tauri": "tauri",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.2.0",
+    "@tauri-apps/plugin-dialog": "^2.2.0",
+    "pdfjs-dist": "4.10.38",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.2.0",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "pdf-lib": "^1.17.1",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.7",
+    "vitest": "^3.0.4"
+  }
+}
