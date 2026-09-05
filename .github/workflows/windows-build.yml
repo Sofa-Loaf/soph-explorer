@@ -1,0 +1,53 @@
+name: Windows build
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Install frontend
+        run: npm ci
+      - name: Test
+        run: npm test
+      - name: Build Windows installer
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: "Soph Explorer Debloat ${{ github.ref_name }}"
+          releaseDraft: true
+          includeUpdaterJson: false
+          releaseBody: |
+            Free, lite Windows file explorer — fast search, PDF preview on by default.
+
+            ### Downloads (Windows 10/11 x64)
+            Built by this workflow (`windows-build.yml`). Same path as `scripts/build-windows.ps1`:
+            - NSIS installer (recommended)
+            - MSI
+            - Portable `soph-explorer.exe`
+
+            Copy `docs/RELEASE_NOTES_TEMPLATE.md` into this draft before publishing.
+
+            Free forever. No account. No subscription.
+      - name: Upload bundles
+        uses: actions/upload-artifact@v4
+        with:
+          name: soph-explorer-windows
+          path: |
+            src-tauri/target/release/soph-explorer.exe
+            src-tauri/target/release/bundle/nsis/*.exe
+            src-tauri/target/release/bundle/msi/*.msi
