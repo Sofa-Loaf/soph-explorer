@@ -45,7 +45,7 @@ MSI builds need the **Windows VBScript** optional feature (on by default on most
 - click **Run workflow**, or
 - push a tag like `v0.1.0`
 
-It uploads the NSIS, MSI, and portable exe, and can open a draft GitHub Release on a `v*` tag.
+It uploads the NSIS, MSI, and portable zip, and **publishes** a GitHub Release on a `v*` tag (`releaseDraft: false`) so [Releases / latest](https://github.com/Sofa-Loaf/soph-explorer/releases/latest) is a public download.
 
 CI on every PR ([`.github/workflows/ci.yml`](../.github/workflows/ci.yml)) checks tests, typecheck, and the web bundle. It does **not** build the Windows installer (that job needs a Windows runner).
 

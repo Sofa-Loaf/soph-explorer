@@ -15,6 +15,7 @@
     "copy-pdfjs": "node scripts/copy-pdfjs-assets.mjs",
     "icons": "python3 scripts/generate-icons.py",
     "sample-pdf": "node scripts/create-sample-pdfs.mjs",
+    "package:portable": "node scripts/package-portable.mjs",
     "tauri": "tauri",
     "tauri:dev": "tauri dev",
     "tauri:build": "tauri build"

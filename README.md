@@ -2,20 +2,31 @@
 
 A lite Windows file explorer. Fast search. **PDF preview is already on.** Free forever.
 
+<p align="center">
+  <a href="https://github.com/Sofa-Loaf/soph-explorer/releases/latest">
+    <img src="docs/download-windows.svg" alt="Download for Windows — Free forever" width="420" height="64">
+  </a>
+</p>
+
+<p align="center">
+  <strong><a href="https://github.com/Sofa-Loaf/soph-explorer/releases/latest">Download the latest Windows release</a></strong>
+  · Free forever · No account · No subscription
+</p>
+
 Same spirit as SophPDF Debloat: big buttons, plain language, no feature maze. This one is for people who just want to open a folder, find a file, and see a PDF without fighting Windows Explorer.
 
 ## Install on Windows (office users)
 
-You do **not** need to build anything. When a release is published:
+You do **not** need to build anything.
 
-1. Open **[Releases](https://github.com/Sofa-Loaf/soph-explorer/releases/latest)**.
-2. Download **`Soph Explorer Debloat_..._x64-setup.exe`** (the installer).
-   - Prefer the installer if you want a Start-menu shortcut.
-   - Or download **`soph-explorer.exe`** if you just want a portable file you can run.
+1. Click **[Download for Windows](https://github.com/Sofa-Loaf/soph-explorer/releases/latest)**.
+2. On the release page, pick one:
+   - **`Soph Explorer Debloat_..._x64-setup.exe`** — installer (Start-menu shortcut). Prefer this when it is listed.
+   - **`Soph-Explorer-Debloat-...-portable-win64.zip`** — unzip and double-click **`START.bat`** (or the portable `.exe` if that zip is the native app).
    - An **`.msi`** is also there if your workplace prefers that.
 3. Double-click the download.
 4. If Windows says **“Windows protected your PC”**, click **More info**, then **Run anyway**. This app is new and may not be signed yet.
-5. Click **Next** until it finishes. Then open **Soph Explorer Debloat** from the Start menu (or double-click the portable `.exe`).
+5. Click **Next** until it finishes. Then open **Soph Explorer Debloat** from the Start menu (or double-click the portable file).
 
 ### First use
 
@@ -52,7 +63,8 @@ Produce the installer **only** on Windows 10/11 x64, or with the GitHub Actions 
 | Path | What you get |
 | --- | --- |
 | [`scripts/build-windows.ps1`](scripts/build-windows.ps1) | Local NSIS + MSI + portable exe |
-| [`.github/workflows/windows-build.yml`](.github/workflows/windows-build.yml) | Same artifacts on `windows-latest` (`workflow_dispatch` or a `v*` tag) |
+| [`scripts/package-portable.mjs`](scripts/package-portable.mjs) | Portable zip of the runnable web preview (`START.bat`) |
+| [`.github/workflows/windows-build.yml`](.github/workflows/windows-build.yml) | Installer + portable zip on `windows-latest` (`workflow_dispatch` or a `v*` tag) |
 | [`src-tauri/tauri.conf.json`](src-tauri/tauri.conf.json) | Tauri 2 bundler: `targets: ["nsis", "msi"]`, current-user NSIS |
 
 On a Windows machine (PowerShell):
@@ -77,6 +89,7 @@ npm install
 npm run sample-pdf
 npm test
 npm run dev          # browser UI at http://127.0.0.1:1420
+npm run package:portable   # zip a Windows-runnable web preview
 ```
 
 Desktop window (needs Tauri system libraries on your OS):
@@ -103,7 +116,7 @@ src/lib/             File helpers + Tauri / browser / sample adapters
 src-tauri/           Tauri 2 Rust shell and Windows bundle config
 scripts/             icons, sample PDFs, Windows build, pdf.js asset copy
 tests/               search / label unit tests
-docs/                Windows build notes
+docs/                Windows build notes + download button
 .github/workflows/   CI + Windows installer build
 ```
 
