@@ -89,9 +89,8 @@ def main() -> None:
     draw_icon(32).save(TAURI_ICONS / "32x32.png")
     draw_icon(128).save(TAURI_ICONS / "128x128.png")
     draw_icon(256).save(TAURI_ICONS / "128x128@2x.png")
-    ico_sizes = [16, 24, 32, 48, 64, 128, 256]
-    ico_images = [draw_icon(s) for s in ico_sizes]
-    ico_images[0].save(TAURI_ICONS / "icon.ico", sizes=[(s, s) for s in ico_sizes], append_images=ico_images[1:])
+    ico_sizes = [(16, 16), (24, 24), (32, 32), (48, 48), (64, 64), (128, 128), (256, 256)]
+    draw_icon(256).save(TAURI_ICONS / "icon.ico", format="ICO", sizes=ico_sizes)
     write_svg(PUBLIC / "favicon.svg")
     write_svg(TAURI_ICONS / "icon.svg")
     print(f"Wrote icons to {TAURI_ICONS}")
