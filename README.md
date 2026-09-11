@@ -4,7 +4,7 @@ A lite Windows file explorer. Fast search. **PDF preview is already on.** Free f
 
 <p align="center">
   <a href="https://github.com/Sofa-Loaf/soph-explorer/releases/latest">
-    <img src="docs/download-windows.svg" alt="Download for Windows — Free forever" width="420" height="64">
+    <img src="docs/download-windows.png" alt="Download for Windows — Free forever" width="420" height="64">
   </a>
 </p>
 
