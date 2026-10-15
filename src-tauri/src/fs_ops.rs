@@ -197,6 +197,17 @@ pub fn parent_path(path: String) -> Option<String> {
         .map(|p| p.to_string_lossy().to_string())
 }
 
+/// Process that opens `path` on Windows without a shell.
+///
+/// `explorer.exe` gets the path as one argument. The path is never given to
+/// `cmd.exe`, so `&`, `^`, and `%VAR%` in a file name are not re-parsed.
+#[cfg(any(test, target_os = "windows"))]
+fn windows_open_process(path: &str) -> std::process::Command {
+    let mut command = std::process::Command::new("explorer.exe");
+    command.arg(path);
+    command
+}
+
 #[tauri::command]
 pub fn open_in_system(path: String) -> Result<(), String> {
     let target = PathBuf::from(&path);
@@ -205,8 +216,7 @@ pub fn open_in_system(path: String) -> Result<(), String> {
     }
     #[cfg(target_os = "windows")]
     {
-        std::process::Command::new("cmd")
-            .args(["/C", "start", "", &path])
+        windows_open_process(&path)
             .spawn()
             .map_err(|_| "Could not open that file.".to_string())?;
         return Ok(());
@@ -226,5 +236,33 @@ pub fn open_in_system(path: String) -> Result<(), String> {
             .spawn()
             .map_err(|_| "Could not open that file.".to_string())?;
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use std::ffi::OsStr;
+
+    use super::windows_open_process;
+
+    #[test]
+    fn windows_open_passes_cmd_metacharacters_as_one_argument() {
+        let paths = [
+            r"C:\Users\me\invoice&calc.exe.pdf",
+            r"C:\Users\me\a^b%PATH%.pdf",
+            r"C:\docs\report & notes^%TEMP%&calc.pdf",
+        ];
+        for path in paths {
+            let command = windows_open_process(path);
+            let program = command.get_program();
+            assert_eq!(program, OsStr::new("explorer.exe"));
+            assert_ne!(program, OsStr::new("cmd"));
+            assert_ne!(program, OsStr::new("cmd.exe"));
+            let args: Vec<&OsStr> = command.get_args().collect();
+            assert_eq!(args, [OsStr::new(path)]);
+            assert!(args.iter().all(|arg| {
+                *arg != OsStr::new("/C") && *arg != OsStr::new("start") && *arg != OsStr::new("cmd")
+            }));
+        }
     }
 }
