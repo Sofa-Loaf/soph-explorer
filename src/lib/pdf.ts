@@ -14,6 +14,8 @@ export async function openPdf(bytes: Uint8Array) {
   const copy = new Uint8Array(bytes);
   return pdfjs.getDocument({
     data: copy,
+    // Do not eval PDF function strings (CVE-2024-4367 class; default is still true).
+    isEvalSupported: false,
     cMapUrl: "/pdfjs/cmaps/",
     cMapPacked: true,
     standardFontDataUrl: "/pdfjs/standard_fonts/",
